@@ -15,13 +15,35 @@ def parse():
     for data in block: # проходим циклом по содержимому контейнера
         if data.find('a'): # находим тег
             description = data.text # записываем в переменную содержание тега
+    description = description.replace('\n\n','\n')
+    description = description.replace('\n\n','\n')
+    count = 0
+    result = ''
+    for i in range(len(description)):
+        if description[i] == ':':                                     
+            result = description[i+1:]
+            break
+    result = result.replace('С составом и структурой факультетов Вы можете ознакомиться, используя левое меню.','')
 
-    print(description, file=f)
-    #print(description)
+    
+    #print(description, file=f)
+    print(result,file = f)    
+
+
+
+
+
 
 parse()
 f.close()
+
+
+
+
+
+'''
 f = open("file.txt", "r")
+
 def workFile():
     k = f.read()
     #for i in range(len(k)-1):
@@ -38,4 +60,4 @@ def workFile():
     print(k)
 workFile()
 f.close()
-
+'''
