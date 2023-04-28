@@ -1,10 +1,13 @@
 from bs4 import BeautifulSoup
 import requests
-f = open("file.txt", "w")
 
+def delN(s):
+    s = s.replace('\n\n','\n')
+    s = s.replace('\n\n','\n')
+    s = s.replace('\n\n','\n')
+    return s
 
-
-def parse():
+def parse(f):
     url = 'https://omgtu.ru/general_information/faculties/' # передаем необходимы URL адрес
     page = requests.get(url) # отправляем запрос методом Get на данный адрес и получаем ответ в переменную
     print(page.status_code) # смотрим ответ
@@ -15,49 +18,15 @@ def parse():
     for data in block: # проходим циклом по содержимому контейнера
         if data.find('a'): # находим тег
             description = data.text # записываем в переменную содержание тега
-    description = description.replace('\n\n','\n')
-    description = description.replace('\n\n','\n')
-    count = 0
-    result = ''
-    for i in range(len(description)):
-        if description[i] == ':':                                     
-            result = description[i+1:]
-            break
-    result = result.replace('С составом и структурой факультетов Вы можете ознакомиться, используя левое меню.','')
-
     
-    #print(description, file=f)
-    print(result,file = f)    
+    description = delN(description)
+    
+    result = description.split(sep = '\n')
+    for i in range(len(result)):
+        if i == 1 or i == len(result)-3:
+            result[i] = ''
+    result = "\n".join(result)
+    
+    result = delN(result)
 
-
-
-
-
-
-parse()
-f.close()
-
-
-
-
-
-'''
-f = open("file.txt", "r")
-
-def workFile():
-    k = f.read()
-    #for i in range(len(k)-1):
-     #   if k[i] == k[i+1] == '\n':
-    k = k.replace('\n','')
-    k = k.replace('С составом и структурой факультетов Вы можете ознакомиться, используя левое меню.','')
-    k = k.replace('Омский государственный технический университет включает в себя семь факультетов: ','')
-    k = k.replace('Факультет','\nФакультет')
-    k = k.replace('Аэро','\nАэро')
-    k = k.replace('Худ','\nХуд')
-    fF = open("fileFinal.txt", "w")
-    print(k,file=fF)
-    fF.close()
-    print(k)
-workFile()
-f.close()
-'''
+    print(result,file = f)  #,file = f
